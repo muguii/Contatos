@@ -52,9 +52,6 @@ namespace Contatos.API.Controllers
             if (pessoa is null)
                 return NotFound();
 
-            if (pessoa.Deletado)
-                return BadRequest();
-
             pessoa.Atualizar(input.Nome);
 
             _dbContext.Update(pessoa); // Opcional, pois o EF já está rastreando o objeto
@@ -70,9 +67,8 @@ namespace Contatos.API.Controllers
             if (pessoa is null)
                 return NotFound();
 
-            pessoa.Excluir();
-
-            _dbContext.Update(pessoa); // Opcional, pois o EF já está rastreando o objeto
+            _dbContext.Contato.RemoveRange(pessoa.Contatos);
+            _dbContext.Pessoa.Remove(pessoa);
             await _dbContext.SaveChangesAsync();
 
             return NoContent();
@@ -82,7 +78,7 @@ namespace Contatos.API.Controllers
         public async Task<IActionResult> PostContato([FromBody] Contato input)
         {
             var pessoa = await _dbContext.Pessoa.SingleOrDefaultAsync(pessoa => pessoa.Id == input.PessoaId);
-            if (pessoa is null || pessoa.Deletado)
+            if (pessoa is null)
                 return BadRequest();
 
             await _dbContext.Contato.AddAsync(input);
@@ -95,15 +91,12 @@ namespace Contatos.API.Controllers
         public async Task<IActionResult> PutContato(Guid contatoId, [FromBody] Contato input)
         {
             var pessoa = await _dbContext.Pessoa.SingleOrDefaultAsync(pessoa => pessoa.Id == input.PessoaId);
-            if (pessoa is null || pessoa.Deletado)
+            if (pessoa is null)
                 return BadRequest();
 
             var contato = await _dbContext.Contato.SingleOrDefaultAsync(contato => contato.Id == contatoId);
             if (contato is null)
                 return NotFound();
-
-            if (contato.Deletado)
-                return BadRequest();
 
             contato.Atualizar(input.Nome, input.Tipo, input.Valor);
 
@@ -120,9 +113,7 @@ namespace Contatos.API.Controllers
             if (contato is null)
                 return NotFound();
 
-            contato.Excluir();
-
-            _dbContext.Update(contato); // Opcional, pois o EF já está rastreando o objeto
+            _dbContext.Contato.Remove(contato);
             await _dbContext.SaveChangesAsync();
 
             return NoContent();
