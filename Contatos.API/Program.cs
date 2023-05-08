@@ -1,4 +1,9 @@
+using Contatos.API.Persistencia;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ContatoDbContext>(options => options.UseInMemoryDatabase("ContatoDb"));
 
 // Add services to the container.
 
