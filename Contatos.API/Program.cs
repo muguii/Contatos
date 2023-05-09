@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // SQL SERVER
-string connectionString = builder.Configuration.GetConnectionString("ContatoCs");
-builder.Services.AddDbContext<ContatoDbContext>(options => options.UseSqlServer(connectionString));
+//string connectionString = builder.Configuration.GetConnectionString("ContatoCs");
+//builder.Services.AddDbContext<ContatoDbContext>(options => options.UseSqlServer(connectionString));
 
-//builder.Services.AddDbContext<ContatoDbContext>(options => options.UseInMemoryDatabase("ContatoDb"));
+builder.Services.AddDbContext<ContatoDbContext>(options => options.UseInMemoryDatabase("ContatoDb"));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
