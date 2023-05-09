@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Persistencia\Configuracoes\" />
-    <Folder Include="Persistencia\Repositorios\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Excecoes\" />
-    <Folder Include="Repositorios\" />
   </ItemGroup>
 
 </Project>
