@@ -1,7 +1,7 @@
-﻿using Contatos.API.Entidades;
+﻿using Contatos.Core.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contatos.API.Persistencia
+namespace Contatos.Infraestrutura.Persistencia
 {
     public class ContatoDbContext : DbContext
     {

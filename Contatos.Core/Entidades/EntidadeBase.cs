@@ -1,4 +1,4 @@
-﻿namespace Contatos.API.Entidades
+﻿namespace Contatos.Core.Entidades
 {
     public class EntidadeBase
     {

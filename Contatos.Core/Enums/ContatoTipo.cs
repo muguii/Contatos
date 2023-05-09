@@ -1,4 +1,4 @@
-﻿namespace Contatos.API.Enums
+﻿namespace Contatos.Core.Enums
 {
     public enum ContatoTipo
     {

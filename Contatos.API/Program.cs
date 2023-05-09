@@ -1,4 +1,4 @@
-using Contatos.API.Persistencia;
+using Contatos.Infraestrutura.Persistencia;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

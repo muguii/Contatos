@@ -1,5 +1,5 @@
-﻿using Contatos.API.Entidades;
-using Contatos.API.Persistencia;
+﻿using Contatos.Core.Entidades;
+using Contatos.Infraestrutura.Persistencia;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

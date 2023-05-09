@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Contatos.API.Persistencia.Migrations
+namespace Contatos.Infraestrutura.Persistencia.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration

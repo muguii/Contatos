@@ -1,6 +1,6 @@
-﻿using Contatos.API.Enums;
+﻿using Contatos.Core.Enums;
 
-namespace Contatos.API.Entidades
+namespace Contatos.Core.Entidades
 {
     public class Contato : EntidadeBase
     {
