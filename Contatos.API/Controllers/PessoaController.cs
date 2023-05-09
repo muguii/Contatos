@@ -63,7 +63,8 @@ namespace Contatos.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var pessoa = await _dbContext.Pessoa.SingleOrDefaultAsync(pessoa => pessoa.Id == id);
+            var pessoa = await _dbContext.Pessoa.Include(pessoa => pessoa.Contatos)
+                                                .SingleOrDefaultAsync(pessoa => pessoa.Id == id);
             if (pessoa is null)
                 return NotFound();
 
