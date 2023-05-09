@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Contatos.Aplicacao\Contatos.Aplicacao.csproj" />
     <ProjectReference Include="..\Contatos.Core\Contatos.Core.csproj" />
     <ProjectReference Include="..\Contatos.Infraestrutura\Contatos.Infraestrutura.csproj" />
   </ItemGroup>

@@ -1,7 +1,7 @@
-﻿using Contatos.Core.Entidades;
-using Contatos.Infraestrutura.Persistencia;
+﻿using Contatos.Aplicacao.InputModels;
+using Contatos.Aplicacao.Servicos.Interfaces;
+using Contatos.Core.Excecoes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Contatos.API.Controllers
 {
@@ -9,115 +9,125 @@ namespace Contatos.API.Controllers
     [Route("api/pessoas")]
     public class PessoaController : ControllerBase
     {
-        private readonly ContatoDbContext _dbContext;
+        private readonly IPessoaService _pessoaService;
 
-        public PessoaController(ContatoDbContext dbContext)
+        public PessoaController(IPessoaService pessoaService)
         {
-            _dbContext = dbContext;
+            _pessoaService = pessoaService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var pessoas = await _dbContext.Pessoa.Include(pessoa => pessoa.Contatos)
-                                                 .ToListAsync();
-
-            return Ok(pessoas);
+            return Ok(await _pessoaService.ObterTodosAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var pessoa = await _dbContext.Pessoa.Include(pessoa => pessoa.Contatos)
-                                                .SingleOrDefaultAsync(pessoa => pessoa.Id == id);
-            if (pessoa is null)
-                return NotFound();
-
-            return Ok(pessoa);
+            try
+            {
+                return Ok(await _pessoaService.ObterPorIdAsync(id));
+            }
+            catch (PessoaNaoExisteException pessoaNaoExiste)
+            {
+                return NotFound(pessoaNaoExiste.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Pessoa input)
+        public async Task<IActionResult> Post([FromBody] AdicionarPessoaInputModel inputModel)
         {
-            await _dbContext.Pessoa.AddAsync(input);
-            await _dbContext.SaveChangesAsync();
+            if (inputModel is null)
+                return BadRequest();
 
-            return CreatedAtAction(nameof(GetById), new { id = input.Id }, input);
+            var id = await _pessoaService.AdicionarAsync(inputModel);
+
+            return CreatedAtAction(nameof(GetById), new { id }, inputModel);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, Pessoa input)
+        public async Task<IActionResult> Put(Guid id, AtualizarPessoaInputModel inputModel)
         {
-            var pessoa = await _dbContext.Pessoa.SingleOrDefaultAsync(pessoa => pessoa.Id == id);
-            if (pessoa is null)
-                return NotFound();
+            try
+            {
+                if (inputModel is null)
+                    return BadRequest();
 
-            pessoa.Atualizar(input.Nome);
+                await _pessoaService.AtualizarAsync(id, inputModel);
 
-            _dbContext.Update(pessoa); // Opcional, pois o EF já está rastreando o objeto
-            await _dbContext.SaveChangesAsync();
-
-            return NoContent();
+                return NoContent();
+            }
+            catch (PessoaNaoExisteException pessoaNaoExiste)
+            {
+                return NotFound(pessoaNaoExiste.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var pessoa = await _dbContext.Pessoa.Include(pessoa => pessoa.Contatos)
-                                                .SingleOrDefaultAsync(pessoa => pessoa.Id == id);
-            if (pessoa is null)
-                return NotFound();
+            try
+            {
+                await _pessoaService.ExcluirAsync(id);
 
-            _dbContext.Contato.RemoveRange(pessoa.Contatos);
-            _dbContext.Pessoa.Remove(pessoa);
-            await _dbContext.SaveChangesAsync();
-
-            return NoContent();
+                return NoContent();
+            }
+            catch (PessoaNaoExisteException pessoaNaoExiste)
+            {
+                return NotFound(pessoaNaoExiste.Message);
+            }
         }
 
         [HttpPost("{id}/contatos")]
-        public async Task<IActionResult> PostContato([FromBody] Contato input)
+        public async Task<IActionResult> PostContato([FromBody] AdicionarContatoInputModel inputModel)
         {
-            var pessoa = await _dbContext.Pessoa.SingleOrDefaultAsync(pessoa => pessoa.Id == input.PessoaId);
-            if (pessoa is null)
-                return BadRequest();
+            try
+            {
+                if (inputModel is null)
+                    return BadRequest();
 
-            await _dbContext.Contato.AddAsync(input);
-            await _dbContext.SaveChangesAsync();
+                var id = await _pessoaService.AdicionarContatoAsync(inputModel);
 
-            return Created(string.Empty, new { id = input.Id });
+                return Created(string.Empty, new { id });
+            }
+            catch (PessoaNaoExisteException pessoaNaoExiste)
+            {
+                return BadRequest(pessoaNaoExiste.Message);
+            }
         }
 
         [HttpPut("{id}/contatos/{contatoId}")]
-        public async Task<IActionResult> PutContato(Guid contatoId, [FromBody] Contato input)
+        public async Task<IActionResult> PutContato(Guid contatoId, [FromBody] AtualizarContatoInputModel inputModel)
         {
-            var pessoa = await _dbContext.Pessoa.SingleOrDefaultAsync(pessoa => pessoa.Id == input.PessoaId);
-            if (pessoa is null)
-                return BadRequest();
+            try
+            {
+                if (inputModel is null)
+                    return BadRequest();
 
-            var contato = await _dbContext.Contato.SingleOrDefaultAsync(contato => contato.Id == contatoId);
-            if (contato is null)
-                return NotFound();
+                await _pessoaService.AtualizarContatoAsync(contatoId, inputModel);
 
-            contato.Atualizar(input.Nome, input.Tipo, input.Valor);
-
-            _dbContext.Update(contato); // Opcional, pois o EF já está rastreando o objeto
-            await _dbContext.SaveChangesAsync();
-
-            return NoContent();
+                return NoContent();
+            }
+            catch (ContatoNaoExisteException contatoNaoExiste)
+            {
+                return NotFound(contatoNaoExiste.Message);
+            }
         }
 
         [HttpDelete("{id}/contatos/{contatoId}")]
         public async Task<IActionResult> DeleteContato(Guid contatoId)
         {
-            var contato = await _dbContext.Contato.SingleOrDefaultAsync(contato => contato.Id == contatoId);
-            if (contato is null)
-                return NotFound();
+            try
+            {
+                await _pessoaService.ExcluirContatoAsync(contatoId);
 
-            _dbContext.Contato.Remove(contato);
-            await _dbContext.SaveChangesAsync();
-
-            return NoContent();
+                return NoContent();
+            }
+            catch (ContatoNaoExisteException contatoNaoExiste)
+            {
+                return NotFound(contatoNaoExiste.Message);
+            }
         }
     }
 }

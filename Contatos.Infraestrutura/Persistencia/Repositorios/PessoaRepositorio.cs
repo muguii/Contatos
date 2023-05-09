@@ -13,27 +13,29 @@ namespace Contatos.Infraestrutura.Persistencia.Repositorios
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Pessoa>> ObterTodos()
+        public async Task<IEnumerable<Pessoa>> ObterTodosAsync()
         {
             return await _dbContext.Pessoa.Include(pessoa => pessoa.Contatos)
                                           .ToListAsync();
         }
 
-        public async Task<Pessoa> ObterPorId(Guid id)
+        public async Task<Pessoa> ObterPorIdAsync(Guid id)
         {
             return await _dbContext.Pessoa.SingleOrDefaultAsync(pessoa => pessoa.Id == id);
         }
 
-        public async Task<Pessoa> ObterPorIdComDetalhes(Guid id)
+        public async Task<Pessoa> ObterPorIdComDetalhesAsync(Guid id)
         {
             return await _dbContext.Pessoa.Include(pessoa => pessoa.Contatos)
                                           .SingleOrDefaultAsync(pessoa => pessoa.Id == id);
         }
 
-        public async Task AdicionarAsync(Pessoa pessoa)
+        public async Task<Guid> AdicionarAsync(Pessoa pessoa)
         {
             await _dbContext.Pessoa.AddAsync(pessoa);
             await SalvarAlteracoesAsync();
+
+            return pessoa.Id;
         }
 
         public async Task AtualizarAsync(Pessoa pessoa)
@@ -51,13 +53,20 @@ namespace Contatos.Infraestrutura.Persistencia.Repositorios
 
         public async Task SalvarAlteracoesAsync()
         {
-            await SalvarAlteracoesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task AdicionarContatoAsync(Contato contato)
+        public async Task<Contato> ObterContatoPorIdAsync(Guid id)
+        {
+            return await _dbContext.Contato.SingleOrDefaultAsync(contato => contato.Id == id);
+        }
+
+        public async Task<Guid> AdicionarContatoAsync(Contato contato)
         {
             await _dbContext.Contato.AddAsync(contato);
             await SalvarAlteracoesAsync();
+
+            return contato.Id;
         }
 
         public async Task AtualizarContatoAsync(Contato contato)

@@ -2,7 +2,7 @@
 {
     public interface IRepositorioSomenteLeitura<T>
     {
-        Task<IEnumerable<T>> ObterTodos();
-        Task<T> ObterPorId(Guid id);
+        Task<IEnumerable<T>> ObterTodosAsync();
+        Task<T> ObterPorIdAsync(Guid id);
     }
 }

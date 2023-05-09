@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Contatos.Core\Contatos.Core.csproj" />
+  </ItemGroup>
+
 </Project>
