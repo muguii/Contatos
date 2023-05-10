@@ -1,5 +1,6 @@
 ﻿using Contatos.Core.Entidades;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Contatos.Infraestrutura.Persistencia
 {
@@ -15,25 +16,7 @@ namespace Contatos.Infraestrutura.Persistencia
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Pessoa>(b =>
-            {
-                b.HasKey(pessoa => pessoa.Id);
-
-                b.Property(pessoa => pessoa.Nome).HasMaxLength(128);
-
-                b.HasMany(pessoa => pessoa.Contatos)
-                 .WithOne()
-                 .HasForeignKey(pessoa => pessoa.PessoaId)
-                 .OnDelete(DeleteBehavior.Restrict); // EXCECAO CASO EU EXCLUA FISICAMENTE UMA PESSOA QUE POSSUA CONTATOS
-            });
-
-            builder.Entity<Contato>(b =>
-            {
-                b.HasKey(contato => contato.Id);
-
-                b.Property(contato => contato.Nome).HasMaxLength(128);
-                b.Property(contato => contato.Valor).HasMaxLength(64);
-            });
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

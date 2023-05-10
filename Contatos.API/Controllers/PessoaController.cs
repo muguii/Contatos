@@ -43,7 +43,7 @@ namespace Contatos.API.Controllers
 
             var id = await _pessoaService.AdicionarAsync(inputModel);
 
-            return CreatedAtAction(nameof(GetById), new { id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id }, new { id });
         }
 
         [HttpPut("{id}")]
@@ -87,6 +87,9 @@ namespace Contatos.API.Controllers
                 if (inputModel is null)
                     return BadRequest();
 
+                if (!Enum.IsDefined(typeof(Core.Enums.ContatoTipo), inputModel.Tipo))
+                    return BadRequest($"Tipos válidos: {string.Join(", ", (int[])Enum.GetValues(typeof(Core.Enums.ContatoTipo)))}");
+
                 var id = await _pessoaService.AdicionarContatoAsync(inputModel);
 
                 return Created(string.Empty, new { id });
@@ -104,6 +107,9 @@ namespace Contatos.API.Controllers
             {
                 if (inputModel is null)
                     return BadRequest();
+
+                if (!Enum.IsDefined(typeof(Core.Enums.ContatoTipo), inputModel.Tipo))
+                    return BadRequest($"Tipos válidos: {string.Join(", ", (int[])Enum.GetValues(typeof(Core.Enums.ContatoTipo)))}");
 
                 await _pessoaService.AtualizarContatoAsync(contatoId, inputModel);
 
