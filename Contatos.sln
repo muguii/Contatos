@@ -5,13 +5,13 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contatos.API", "Contatos.API\Contatos.API.csproj", "{30D43379-60A0-4F85-A9BF-2E94B309B7A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contatos.Infraestrutura", "Contatos.Infraestrutura\Contatos.Infraestrutura.csproj", "{B1966773-1538-4F66-893C-6BDEEAA2CD39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contatos.Infraestrutura", "Contatos.Infraestrutura\Contatos.Infraestrutura.csproj", "{B1966773-1538-4F66-893C-6BDEEAA2CD39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contatos.Core", "Contatos.Core\Contatos.Core.csproj", "{F5EEFFAD-01EE-4B68-B25A-34C14D1C4AD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contatos.Core", "Contatos.Core\Contatos.Core.csproj", "{F5EEFFAD-01EE-4B68-B25A-34C14D1C4AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contatos.TestesUnitarios", "Contatos.TestesUnitarios\Contatos.TestesUnitarios.csproj", "{0AFE1B89-1494-46D4-955F-BB40AA5D74C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contatos.TestesUnitarios", "Contatos.TestesUnitarios\Contatos.TestesUnitarios.csproj", "{0AFE1B89-1494-46D4-955F-BB40AA5D74C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contatos.Aplicacao", "Contatos.Aplicacao\Contatos.Aplicacao.csproj", "{4F742CF3-69FC-41F2-99A5-B8F40F17B261}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contatos.Aplicacao", "Contatos.Aplicacao\Contatos.Aplicacao.csproj", "{4F742CF3-69FC-41F2-99A5-B8F40F17B261}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

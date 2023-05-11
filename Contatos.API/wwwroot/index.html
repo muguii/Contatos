@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Contatos</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2; /*Cinza bastante claro*/
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333; /*Cinza escuro*/
+        }
+
+        form {
+            background-color: #fff; /*Branco*/
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /*Preto opaco*/
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666; /*Cinza claro*/
+        }
+
+        select, input[type="text"], input[type="number"] {
+            width: 15%;
+            padding: 10px;
+            border: 1px solid #ccc; /*Cinza*/
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 17%;
+        }
+
+        button {
+            background-color: #007bff; /*Azul*/
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .botaoMaior {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0069d9; /*Azul escuro*/
+        }
+
+        table {
+            border-collapse: collapse; /*Unir as bordas*/
+            width: 100%;
+            background-color: #fff; /*Branco*/
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /*Preto opaco*/
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ccc; /*Cinza*/
+        }
+
+        th {
+            background-color: #007bff; /*Azul*/
+            color: #fff;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4); /*Preto opaco*/
+        }
+
+        .modal-conteudo {
+            background-color: #fefefe; /*Cinza bastante claro*/
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .fechar {
+            color: #ccc; /*Cinza*/
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .fechar:hover, .fechar:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <h1>Lista de Contatos</h1>
+
+    <div id="adicionarPessoaModal" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="document.getElementById('adicionarPessoaModal').style.display='none'">&times;</span>
+            <h2>Adicionar Pessoa</h2>
+            <form onsubmit="AdicionarPessoa(event)">
+                <label for="pessoaNome">Nome:</label>
+                <input type="text" name="pessoaNome" required>
+                <br>
+
+                <button type="submit" class="botaoMaior">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="editarPessoaModal" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="document.getElementById('editarPessoaModal').style.display='none'">&times;</span>
+            <h2>Editar Pessoa</h2>
+            <form id="editarPessoaForm" onsubmit="SalvarAlteracoesPessoa(event)">
+                <input type="hidden" id="editarPessoaId">
+
+                <label for="editarPessoaNome">Nome</label>
+                <input type="text" id="editarPessoaNome" required>
+                <br />
+
+                <button type="submit" class="botaoMaior">Salvar</button>
+            </form>
+
+            <h2>Contatos</h2>
+            <button type="button" id="btnAdicionarContato" class="botaoMaior" style="margin-bottom: 10px;" onclick="document.getElementById('adicionarContatoModal').style.display = 'block';">Adicionar Contato</button>
+            <table id="pessoa-contatos-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Telefone/Email</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody />
+            </table>
+        </div>
+    </div>
+
+    <div id="adicionarContatoModal" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="document.getElementById('adicionarContatoModal').style.display='none'">&times;</span>
+            <h2>Adicionar Contato</h2>
+            <form onsubmit="AdicionarContato(event)">
+                <input type="hidden" id="contatoId">
+
+                <label for="contatoNome">Nome</label>
+                <input type="text" id="contatoNome" required>
+                <br />
+
+                <label for="contatoTipo">Tipo</label>
+                <select id="contatoTipo" required>
+                    <option value="1">Telefone</option>
+                    <option value="2">Email</option>
+                    <option value="3">WhatsApp</option>
+                </select>
+                <br />
+
+                <label for="contatoValor">Telefone/Email</label>
+                <input type="text" id="contatoValor" required>
+                <br />
+
+                <button type="submit" class="botaoMaior">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="editarContatoModal" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar" onclick="document.getElementById('editarContatoModal').style.display='none'">&times;</span>
+            <h2>Editar Contato</h2>
+            <form id="editarContatoForm" onsubmit="SalvarAlteracoesContato(event)">
+                <input type="hidden" id="editarContatoId">
+
+                <label for="editarContatoNome">Nome</label>
+                <input type="text" id="editarContatoNome" required>
+                <br />
+
+                <label for="editarContatoTipo">Tipo</label>
+                <select id="editarContatoTipo" required>
+                    <option value="1">Telefone</option>
+                    <option value="2">Email</option>
+                    <option value="3">WhatsApp</option>
+                </select>
+                <br />
+
+                <label for="editarContatoValor">Telefone/Email</label>
+                <input type="text" id="editarContatoValor" required>
+                <br />
+
+                <button type="submit" class="botaoMaior">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <button type="button" id="btnAdicionarPessoa" class="botaoMaior" style="margin-bottom: 10px;" onclick="document.getElementById('adicionarPessoaModal').style.display = 'block';">Adicionar Pessoa</button>
+    <table id="pessoa-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Quantidade de Contatos</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody />
+    </table>
+</body>
+</html>
