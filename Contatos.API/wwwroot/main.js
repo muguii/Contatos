@@ -26,7 +26,7 @@ function AdicionarEventoParaFecharModalAoClicarFora() {
 
 let pessoas = [];
 async function getPessoas() {
-    await fetch("http://localhost:36983/api/pessoas")
+    await fetch("https://listacontatosmuriel.azurewebsites.net/api/pessoas")
     .then(response => response.json())
     .then(response => {
         pessoas = response;
@@ -35,7 +35,7 @@ async function getPessoas() {
 }
 
 async function postPessoa(inputModel) {
-    await fetch('http://localhost:36983/api/pessoas', {
+    await fetch('https://listacontatosmuriel.azurewebsites.net/api/pessoas', {
         method: 'POST',
         body: JSON.stringify(inputModel),
         headers: {
@@ -56,7 +56,7 @@ async function postPessoa(inputModel) {
 }
 
 async function putPessoa(pessoaId, inputModel) {
-    await fetch(`http://localhost:36983/api/pessoas/${pessoaId}`, {
+    await fetch(`https://listacontatosmuriel.azurewebsites.net/api/pessoas/${pessoaId}`, {
         method: 'PUT',
         body: JSON.stringify(inputModel),
         headers: {
@@ -71,7 +71,7 @@ async function putPessoa(pessoaId, inputModel) {
 }
 
 async function deletePessoa(pessoaId) {
-    await fetch(`http://localhost:36983/api/pessoas/${pessoaId}`, {
+    await fetch(`https://listacontatosmuriel.azurewebsites.net/api/pessoas/${pessoaId}`, {
         method: 'DELETE'
     })
     .then(response => {
@@ -82,7 +82,7 @@ async function deletePessoa(pessoaId) {
 }
 
 async function postContato(pessoaId, inputModel) {
-    await fetch(`http://localhost:36983/api/pessoas/${pessoaId}/contatos`, {
+    await fetch(`https://listacontatosmuriel.azurewebsites.net/api/pessoas/${pessoaId}/contatos`, {
         method: 'POST',
         body: JSON.stringify(inputModel),
         headers: {
@@ -108,7 +108,7 @@ async function postContato(pessoaId, inputModel) {
 }
 
 async function putContato(pessoaId, contatoId, inputModel) {
-    await fetch(`http://localhost:36983/api/pessoas/${pessoaId}/contatos/${contatoId}`, {
+    await fetch(`https://listacontatosmuriel.azurewebsites.net/api/pessoas/${pessoaId}/contatos/${contatoId}`, {
         method: 'PUT',
         body: JSON.stringify(inputModel),
         headers: {
@@ -128,7 +128,7 @@ async function putContato(pessoaId, contatoId, inputModel) {
 }
 
 async function deleteContato(pessoaId, contatoId) {
-    await fetch(`http://localhost:36983/api/pessoas/${pessoaId}/contatos/${contatoId}`, {
+    await fetch(`https://listacontatosmuriel.azurewebsites.net/api/pessoas/${pessoaId}/contatos/${contatoId}`, {
         method: 'DELETE'
     })
     .then(response => {
