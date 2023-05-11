@@ -24,6 +24,16 @@ function AdicionarEventoParaFecharModalAoClicarFora() {
     });
 }
 
+function MostrarModalSucesso() {
+    const alertaSucessoModal = document.getElementById("alertaSucessoModal");
+
+    alertaSucessoModal.style.display = "block";
+
+    setTimeout(function () {
+        alertaSucessoModal.style.display = "none";
+    }, 3000);
+}
+
 let pessoas = [];
 async function getPessoas() {
     await fetch("https://listacontatosmuriel.azurewebsites.net/api/pessoas")
@@ -52,6 +62,8 @@ async function postPessoa(inputModel) {
 
         pessoas.push(pessoa)
         AtualizarTabelaPessoas();
+
+        MostrarModalSucesso();
     })
 }
 
@@ -67,6 +79,8 @@ async function putPessoa(pessoaId, inputModel) {
         pessoas.find(pessoa => pessoa.id == pessoaId).nome = inputModel.nome;
 
         AtualizarTabelaPessoas();
+
+        MostrarModalSucesso();
     })
 }
 
@@ -78,6 +92,8 @@ async function deletePessoa(pessoaId) {
         pessoas = pessoas.filter(pessoa => pessoa.id != pessoaId);
 
         AtualizarTabelaPessoas();
+
+        MostrarModalSucesso();
     })
 }
 
@@ -104,6 +120,8 @@ async function postContato(pessoaId, inputModel) {
 
         AtualizarTabelaPessoas();
         AtualizarTabelaContatos(pessoa);
+
+        MostrarModalSucesso();
     })
 }
 
@@ -124,6 +142,8 @@ async function putContato(pessoaId, contatoId, inputModel) {
         contato.valor = inputModel.valor;
 
         AtualizarTabelaContatos(pessoa);
+
+        MostrarModalSucesso();
     })
 }
 
@@ -136,6 +156,8 @@ async function deleteContato(pessoaId, contatoId) {
         pessoa.contatos = pessoa.contatos.filter(contato => contato.id != contatoId);
 
         AtualizarTabelaContatos(pessoa);
+
+        MostrarModalSucesso();
     })
 }
 
